@@ -14,13 +14,40 @@ var connection = mysql.createConnection({
 connection.connect(function(err){
   if(err) throw err;
   console.log("connected as id " + connection.threadId);
+  //insertItem("pizza", "food", 7.00, 1);
+  readItems();
   connection.end();
 });
 
-var insertItem = function(){
+var insertItem = function(product, department, price, stock_quantity){
+  //product, department, price, stock_quantity
+  var queryString = 'INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (' + '"' + product + '"' + ', ' + '"' + department + '"' + ', ' + price + ', ' + stock_quantity + ')';
 
   connection.query(queryString, function(err, res){
     if (err) throw err;
-    console.log(res);
+//console.log(res);
+  });
+}
+
+var readItems = function(){
+  var queryString = 'SELECT * FROM products';
+
+  connection.query(queryString, function(err, res){
+    if(err) throw err;
+    console.log("");
+    console.log("THE BAMAZON CATALOGUE: ");
+    console.log("");
+
+    for(i = 0; i < res.length; i++){
+      console.log("Item ID: " + res[i].item_id);
+      console.log("Product: " + res[i].product_name);
+      console.log("Department: " + res[i].department_name);
+      console.log("Price: " + res[i].price);
+      console.log("Quantity: " + res[i].stock_quantity);
+      console.log("");
+      console.log("");
+    }
+
+
   });
 }
